@@ -1,0 +1,31 @@
+{
+  "name": "trava",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "trava",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://ts4.travian.ru/*"
+      ],
+      "css": [ "style.css" ],
+      "js": [ "jquery.js", "script.js" ]
+    }
+  ],
+  "icons": {
+      "16": "img/16emotion_confuse.png",
+      "48": "img/32emotion_confuse.png"
+    },
+  "browser_action": { // Элементы браузера
+    "default_title": "trava", // Название кнопки
+    "default_icon": "img/32emotion_confuse.png", // Иконка для кнопки
+    "default_popup": "popup.html" // Всплывающее окно
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+  ]
+  //"options_page": "popup.html" // Страница настроек
+}
