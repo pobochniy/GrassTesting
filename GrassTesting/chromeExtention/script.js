@@ -11,19 +11,22 @@ $(function () {
 
     chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
         console.log(request);
-        debugger
         isBotEnabled = request.isBotEnabled;
         getPlayersInfo = request.getPlayersInfo;
         return true;
     });
 
-    setTimeout(main, 500);
+    setTimeout(mainWorker, 500);
 });
 
-function main() {
+async function mainWorker() {
+    await main();
+    setTimeout(mainWorker, 5500);
+}
+
+async function main() {
     if (!this.isBotEnabled) {
         console.log('# main stopped');
-        setTimeout(main, 5500);
         return;
     }
 
@@ -31,14 +34,11 @@ function main() {
         let nextPlayer = this.playersView.find(x => x.viewed === false);
         if (nextPlayer) {
             this.location = 'https://ts4.travian.ru/spieler.php?uid=' + nextPlayer.pid;
-            debugger;
-            setTimeout(main, 5500);
             return;
         }
     }
 
     console.log('# main runned');
-    setTimeout(main, 5500);
 }
 
 //function sendChat() {
