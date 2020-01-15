@@ -1,18 +1,16 @@
 ﻿var isProd = false;
-var url = isProd ? 'https://moneybag.site' : 'https://localhost:44359';
-var isBotEnabled = false;
-var getPlayersInfo = false;
-var playersView = [{ pid: 3956, viewed: false }, { pid: 3215, viewed: false }];
+var url = isProd ? 'https://moneybag.site' : 'https://localhost:44369';
+var settings = {};
 
 console.log('# start');
 
 $(function () {
     console.log('# onload');
-
+    if (localStorage["botSettings"]) settings = JSON.parse(localStorage["botSettings"]);
     chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
         console.log(request);
-        isBotEnabled = request.isBotEnabled;
-        getPlayersInfo = request.getPlayersInfo;
+        settings = request;
+        localStorage["botSettings"] = JSON.stringify(request);
         return true;
     });
 
@@ -25,16 +23,62 @@ async function mainWorker() {
 }
 
 async function main() {
-    if (!this.isBotEnabled) {
+    if (!this.settings.isBotEnabled) {
         console.log('# main stopped');
         return;
     }
 
-    if (this.getPlayersInfo) {
-        let nextPlayer = this.playersView.find(x => x.viewed === false);
-        if (nextPlayer) {
-            this.location = 'https://ts4.travian.ru/spieler.php?uid=' + nextPlayer.pid;
-            return;
+    if (this.settings.getPlayersInfo) {
+        let nextPlayerId = await $.get(url + '/api/Observer/GetNextViewer');
+        if (nextPlayerId) {
+            const loc = 'https://ts4.travian.ru/spieler.php?uid=' + nextPlayerId;
+            if (this.location.href !== loc) {
+                this.location = loc;
+                return;
+            }
+            else {
+                var par = {};
+                par.id = nextPlayerId;
+                par.name = $($('.titleInHeader')[0]).text();
+                par.rank = $($('#details td')[0]).text();
+                par.nation = $($('#details td')[1]).text();
+                par.clan = $($('#details td')[2]).text();
+                par.countVillages = $($('#details td')[3]).text();
+
+                let population = $($('#details td')[4]).text();
+                par.rankPopulation = population.substr(0, population.indexOf(' '));
+                population = population.substr(population.indexOf('(') + 1);
+                par.countPopulation = population.substr(0, population.indexOf(' '));
+
+                let att = $($('#details td')[5]).text();
+                par.rankAtt = att.substr(0, att.indexOf(' '));
+                att = att.substr(att.indexOf('(') + 1);
+                par.pointAtt = att.substr(0, att.indexOf(' '));
+
+                let def = $($('#details td')[6]).text();
+                par.rankDef = def.substr(0, def.indexOf(' '));
+                def = def.substr(def.indexOf('(') + 1);
+                par.pointDef = def.substr(0, def.indexOf(' '));
+
+                let villages = [];
+                for (let i = 0; i < par.countVillages; i++) {
+                    let village = {};
+                    village.name = $($('#villages td')[i * 4])[0].innerText;
+                    village.population = $($('#villages td')[i * 4 + 2]).text().trim();
+                    village.coord = $($('#villages td')[i * 4 + 3]).text().trim();
+                    villages.push(village);
+                }
+
+                par.villagesJson = JSON.stringify(villages);
+                
+                await $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(par),
+                    url: url + '/api/Observer/SendInfo'
+                });
+            }
         }
     }
 
