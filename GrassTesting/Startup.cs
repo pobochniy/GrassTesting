@@ -44,6 +44,7 @@ namespace GrassTesting
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddCors(c => c.AddPolicy("AllowSpecificOrigin", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "trava api", Version = "v1" });
@@ -62,6 +63,7 @@ namespace GrassTesting
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
