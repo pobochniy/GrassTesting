@@ -41,6 +41,12 @@ async function main() {
                 par.id = nextPlayerId;
                 par.name = $($('.titleInHeader')[0]).text();
                 par.rank = $($('#details td')[0]).text();
+
+                if (par.name === 'Профиль игрока' && par.rank === '') {
+                    await $.post(url + '/api/Observer/RemovePlayer?pid=' + par.id);
+                    return;
+                }
+
                 par.nation = $($('#details td')[1]).text();
                 par.clan = $($('#details td')[2]).text();
                 par.countVillages = $($('#details td')[3]).text();
@@ -70,8 +76,8 @@ async function main() {
                 }
 
                 par.villagesJson = JSON.stringify(villages);
-                debugger;
-                return $.ajax({
+
+                await $.ajax({
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
