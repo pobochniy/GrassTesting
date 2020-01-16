@@ -28,7 +28,7 @@ namespace GrassTesting.Controllers
         public async Task<IActionResult> SendInfo([FromBody] TravianPlayerHistory dto)
         {
             await service.SendInfo(dto);
-            return Ok();
+            return Ok(true);
         }
     }
 }

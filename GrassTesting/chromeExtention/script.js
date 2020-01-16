@@ -14,12 +14,12 @@ $(function () {
         return true;
     });
 
-    setTimeout(mainWorker, 500);
+    setTimeout(mainWorker, 3500);
 });
 
 async function mainWorker() {
     await main();
-    setTimeout(mainWorker, 5500);
+    setTimeout(mainWorker, 2000);
 }
 
 async function main() {
@@ -70,8 +70,8 @@ async function main() {
                 }
 
                 par.villagesJson = JSON.stringify(villages);
-                
-                await $.ajax({
+                debugger;
+                return $.ajax({
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
