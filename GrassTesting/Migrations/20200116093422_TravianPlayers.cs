@@ -18,12 +18,12 @@ namespace GrassTesting.Migrations
                     Nation = table.Column<string>(nullable: true),
                     Clan = table.Column<string>(nullable: true),
                     CountVillages = table.Column<int>(nullable: false),
-                    RankPopulation = table.Column<string>(nullable: true),
-                    CountPopulation = table.Column<string>(nullable: true),
-                    RankAtt = table.Column<string>(nullable: true),
-                    PointAtt = table.Column<string>(nullable: true),
-                    RankDef = table.Column<string>(nullable: true),
-                    PointDef = table.Column<string>(nullable: true),
+                    RankPopulation = table.Column<int>(nullable: false),
+                    CountPopulation = table.Column<int>(nullable: false),
+                    RankAtt = table.Column<int>(nullable: false),
+                    PointAtt = table.Column<int>(nullable: false),
+                    RankDef = table.Column<int>(nullable: false),
+                    PointDef = table.Column<int>(nullable: false),
                     VillagesJson = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -35,7 +35,8 @@ namespace GrassTesting.Migrations
                 name: "TravianPlayersId",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    DateDeleted = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

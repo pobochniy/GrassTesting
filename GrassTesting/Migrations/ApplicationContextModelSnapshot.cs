@@ -27,7 +27,7 @@ namespace GrassTesting.Migrations
 
                     b.Property<string>("Clan");
 
-                    b.Property<string>("CountPopulation");
+                    b.Property<int>("CountPopulation");
 
                     b.Property<int>("CountVillages");
 
@@ -35,17 +35,17 @@ namespace GrassTesting.Migrations
 
                     b.Property<string>("Nation");
 
-                    b.Property<string>("PointAtt");
+                    b.Property<int>("PointAtt");
 
-                    b.Property<string>("PointDef");
+                    b.Property<int>("PointDef");
 
                     b.Property<int>("Rank");
 
-                    b.Property<string>("RankAtt");
+                    b.Property<int>("RankAtt");
 
-                    b.Property<string>("RankDef");
+                    b.Property<int>("RankDef");
 
-                    b.Property<string>("RankPopulation");
+                    b.Property<int>("RankPopulation");
 
                     b.Property<string>("VillagesJson");
 
@@ -57,6 +57,8 @@ namespace GrassTesting.Migrations
             modelBuilder.Entity("GrassTesting.Entity.TravianPlayerId", b =>
                 {
                     b.Property<int>("Id");
+
+                    b.Property<DateTime?>("DateDeleted");
 
                     b.HasKey("Id");
 

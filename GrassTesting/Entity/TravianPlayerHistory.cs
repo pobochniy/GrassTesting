@@ -26,17 +26,17 @@ namespace GrassTesting.Entity
 
         public int CountVillages { get; set; }
 
-        public string RankPopulation { get; set; }
+        public int RankPopulation { get; set; }
 
-        public string CountPopulation { get; set; }
+        public int CountPopulation { get; set; }
 
-        public string RankAtt { get; set; }
+        public int RankAtt { get; set; }
 
-        public string PointAtt { get; set; }
+        public int PointAtt { get; set; }
 
-        public string RankDef { get; set; }
+        public int RankDef { get; set; }
 
-        public string PointDef { get; set; }
+        public int PointDef { get; set; }
 
         public string VillagesJson { get; set; }
     }
