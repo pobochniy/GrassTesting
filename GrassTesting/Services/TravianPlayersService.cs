@@ -23,7 +23,7 @@ namespace GrassTesting.Services
             var query = from p in db.TravianPlayersId
                         let isExist = db.TravianPlayersHistory.Where(x => x.Id == p.Id && x.Date == date).Any()
 
-                        where !isExist
+                        where !p.DateDeleted.HasValue && !isExist
                         select p.Id;
 
             var res = await query.FirstOrDefaultAsync();
@@ -35,6 +35,14 @@ namespace GrassTesting.Services
             dto.Date = DateTime.UtcNow.Date;
 
             await db.AddAsync(dto);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task RemovePlayer(int pid)
+        {
+            var entity = await db.TravianPlayersId.SingleAsync(x => x.Id == pid);
+            entity.DateDeleted = DateTime.UtcNow.Date;
+
             await db.SaveChangesAsync();
         }
     }

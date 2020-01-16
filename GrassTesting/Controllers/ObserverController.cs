@@ -30,5 +30,12 @@ namespace GrassTesting.Controllers
             await service.SendInfo(dto);
             return Ok(true);
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RemovePlayer(int pid)
+        {
+            await service.RemovePlayer(pid);
+            return Ok(true);
+        }
     }
 }

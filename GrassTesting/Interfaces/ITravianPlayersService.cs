@@ -8,5 +8,7 @@ namespace GrassTesting.Interfaces
         Task<int?> GetNextViewer();
 
         Task SendInfo(TravianPlayerHistory dto);
+
+        Task RemovePlayer(int pid);
     }
 }
